@@ -45,6 +45,8 @@
     "dynamoose": "3.2.0",
     "graphql": "16.6.0",
     "husky": "8.0.3",
+    "keycloak-connect": "^21.1.1",
+    "nest-keycloak-connect": "^1.9.1",
     "nestjs-dynamoose": "0.5.4",
     "reflect-metadata": "0.1.13",
     "rimraf": "5.0.1",

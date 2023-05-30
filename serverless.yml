@@ -48,7 +48,7 @@ functions:
     events:
       - http:
           cors: true
-          path: '{proxy+}'
+          path: '{any+}'
           method: any
 
 resources:
