@@ -25,7 +25,9 @@
     "ddb:start": "sls dynamodb start",
     "sls:offline": "cross-env NO_COLOR= sls offline",
     "sls:online": "cross-env NO_COLOR= cross-env IS_DDB_LOCAL= sls offline",
-    "genres": "ts-node genres.ts -- \"src/**/*.schema.ts\" \"resource/dynamodb.yml\""
+    "genres": "ts-node genres.ts -- \"src/**/*.schema.ts\" \"resource/dynamodb.yml\"",
+    "ddb:fix": "sed -i 's|http://s3-us-west-2|https://s3-us-west-2|g' ./node_modules/dynamodb-localhost/dynamodb/config.json && sed -i 's|require(\"http\")|require(\"https\")|g' ./node_modules/dynamodb-localhost/dynamodb/installer.js",
+    "ddb:fix-mac": "sed -i'' -e 's|http://s3-us-west-2|https://s3-us-west-2|g' ./node_modules/dynamodb-localhost/dynamodb/config.json && sed -i'' -e 's|require(\"http\")|require(\"https\")|g' ./node_modules/dynamodb-localhost/dynamodb/installer.js"
   },
   "dependencies": {
     "@apollo/server": "4.7.1",
