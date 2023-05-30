@@ -6,7 +6,7 @@ import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 
 import { NotificationModule } from './modules/notification/notification.module';
-
+import { RecordModule } from './modules/record/record.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -25,6 +25,7 @@ import { NotificationModule } from './modules/notification/notification.module';
       },
     }),
     NotificationModule,
+    RecordModule,
   ],
 })
 export class AppModule {}
