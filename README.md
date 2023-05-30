@@ -14,13 +14,13 @@ Airtable's serverless backend runs on AWS Lambda and data is stored in AWS Dynam
 ## Usage
 
 ```bash
-git clone https://github.com/hardyscc/aws-nestjs-starter.git <Your_Project_Name>
+git clone https://github.com/steedos/clouddb.git <Your_Project_Name>
 cd <Your_Project_Name>
 
 npm install
 ```
 
-After that find and replace `aws-nestjs-starter` to your project name on the following files:
+After that find and replace `clouddb` to your project name on the following files:
 
 - package.json
 - serverless.yml
