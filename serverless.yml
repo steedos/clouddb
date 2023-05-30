@@ -1,10 +1,11 @@
-service: aws-nestjs-starter
+service: clouddb
 
 provider:
   name: aws
+  endpointType: REGIONAL
   runtime: nodejs16.x
   stage: ${opt:stage, 'dev'}
-  region: ${opt:region, 'us-east-1'}
+  region: ${opt:region, 'cn-northwest-1'}
   environment:
     SERVICE: ${self:service}
     STAGE: ${self:provider.stage}
@@ -24,7 +25,7 @@ provider:
             - dynamodb:PutItem
             - dynamodb:UpdateItem
             - dynamodb:DeleteItem
-          Resource: arn:aws:dynamodb:${self:provider.region}:*:*
+          Resource: arn:aws-cn:dynamodb:${self:provider.region}:*:*
 
 plugins:
   - serverless-plugin-typescript
