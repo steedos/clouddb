@@ -9,11 +9,13 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-
+import { UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from '@5stones/nest-oidc';
 import { CreateRecordInput } from '../model/create-record.input';
 import { UpdateRecordInput } from '../model/update-record.input';
 import { RecordService } from '../service/record.service';
 
+@UseGuards(JwtAuthGuard)
 @Controller('record')
 export class RecordController {
   constructor(private readonly recordService: RecordService) {}

@@ -3,7 +3,7 @@ service: clouddb
 provider:
   name: aws
   endpointType: REGIONAL
-  runtime: nodejs16.x
+  runtime: nodejs18.x
   stage: ${opt:stage, 'dev'}
   region: ${opt:region, 'cn-northwest-1'}
   environment:

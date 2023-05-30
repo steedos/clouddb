@@ -2,24 +2,19 @@ import { DynamooseModule } from 'nestjs-dynamoose';
 
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
-import { APP_GUARD } from '@nestjs/core';
-import { ConfigModule } from './modules/config/config.module';
+// import { APP_GUARD } from '@nestjs/core';
+import { ConfigModule } from '@nestjs/config';
+
 import { GraphQLModule } from '@nestjs/graphql';
-import {
-  AuthGuard, KeycloakConnectModule,
-  ResourceGuard,
-  RoleGuard
-} from 'nest-keycloak-connect';
-import { KeycloakConfigService } from './modules/config/keycloak-config.service';
+import { AuthModule } from '@5stones/nest-oidc';
 
 import { NotificationModule } from './modules/notification/notification.module';
 import { RecordModule } from './modules/record/record.module';
 @Module({
   imports: [
-    // ConfigModule.forRoot(),
-    KeycloakConnectModule.registerAsync({
-      useExisting: KeycloakConfigService,
-      imports: [ConfigModule]
+    ConfigModule.forRoot(),
+    AuthModule.forRoot({
+      oidcAuthority: 'https://id.steedos.cn/realms/master',
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
@@ -39,18 +34,10 @@ import { RecordModule } from './modules/record/record.module';
     RecordModule,
   ],
   providers: [
-    {
-      provide: APP_GUARD,
-      useClass: AuthGuard,
-    },
-    {
-      provide: APP_GUARD,
-      useClass: ResourceGuard,
-    },
-    {
-      provide: APP_GUARD,
-      useClass: RoleGuard,
-    },
+    // {
+    //   provide: APP_GUARD,
+    //   useClass: JwtAuthGuard,
+    // },
   ],
 })
 export class AppModule {}

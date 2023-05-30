@@ -1,10 +1,13 @@
 import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { UseGuards } from '@nestjs/common';
+import { JwtAuthGuardGraphQL } from '@5stones/nest-oidc';
 
 import { CreateRecordInput } from '../model/create-record.input';
 import { Record } from '../model/record.model';
 import { UpdateRecordInput } from '../model/update-record.input';
 import { RecordService } from '../service/record.service';
 
+@UseGuards(JwtAuthGuardGraphQL)
 @Resolver(() => Record)
 export class RecordResolver {
   constructor(private readonly recordService: RecordService) {}
