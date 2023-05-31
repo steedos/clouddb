@@ -31,6 +31,7 @@ plugins:
   - serverless-plugin-typescript
   - serverless-dynamodb-local
   - serverless-offline
+  - serverless-cloudformation-changesets-v3
 
 custom:
   dynamodb:
@@ -52,5 +53,4 @@ functions:
           method: any
 
 resources:
-  - ${file(resource/dynamodb-notification.yml)}
-  - ${file(resource/dynamodb-record.yml)}
+  - ${file(resource/dynamodb.yml)}

@@ -4,12 +4,26 @@ import { DynamooseModule } from 'nestjs-dynamoose';
 import { Module } from '@nestjs/common';
 // import { APP_GUARD } from '@nestjs/core';
 import { ConfigModule } from '@nestjs/config';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 // import { GraphQLModule } from '@nestjs/graphql';
-import { AuthModule } from '@modules/auth/auth.module';
+import { AuthModule } from './modules/auth/auth.module';
 
-import { NotificationModule } from './modules/notification/notification.module';
+// import { NotificationModule } from './modules/notification/notification.module';
 import { RecordModule } from './modules/record/record.module';
+
+export const setupSwagger = (app: any)=>{
+
+  // swagger
+  const config = new DocumentBuilder()
+    .setTitle('CloudDB')
+    .setDescription('The CloudDB API description')
+    .setVersion('1.0')
+    .addBearerAuth()
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, document);
+}
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -30,7 +44,7 @@ import { RecordModule } from './modules/record/record.module';
         suffix: '-table',
       },
     }),
-    NotificationModule,
+    // NotificationModule,
     RecordModule,
   ],
   providers: [

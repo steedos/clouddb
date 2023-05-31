@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { UseGuards } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
-import { JwtAuthGuard } from '@modules/auth/auth.module';
+import { JwtAuthGuard } from '../../auth/auth.module';
 import { RecordService } from '../service/record.service';
 import { RecordInput, MultipleRecordsInput } from '../model/record.model';
 
