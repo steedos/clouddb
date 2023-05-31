@@ -1,31 +1,32 @@
 import { Schema } from 'dynamoose';
 
 export const RecordSchema = new Schema({
-  id: {
+  tableId: {
     type: String,
     hashKey: true,
   },
-  targetId: {
+  id: {
     type: String,
-    index: {
-      type: 'global',
-      rangeKey: 'status',
-    },
+    rangeKey: true,
   },
-  userId: {
-    type: String,
-    index: {
-      type: 'global',
-      rangeKey: 'status',
-    },
-  },
-  content: {
+  baseId: {
     type: String,
   },
-  status: {
+  fields: {
+    type: Object,
+  },
+  createdTime: {
     type: String,
   },
-  createAt: {
+  createdBy: {
     type: String,
   },
+  modifiedTime: {
+    type: String,
+  },
+  modifiedBy: {
+    type: String,
+  },
+}, {
+  saveUnknown: true
 });

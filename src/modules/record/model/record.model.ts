@@ -1,20 +1,56 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { Field } from '@nestjs/graphql';
+import { ApiProperty } from '@nestjs/swagger';
 
-import { CreateRecordInput } from './create-record.input';
-import { RecordStatus } from './record.enum';
+import { IsNotEmpty, IsString, IsObject } from 'class-validator';
+
+
+export class RecordInput {
+  @ApiProperty()
+  fields: object;
+};
+export class MultipleRecordsInput {
+  @ApiProperty()
+  fields: object;
+  @ApiProperty({type: () => [RecordInput]})
+  records: [RecordInput];
+};
 
 export type RecordKey = {
+  tableId: string;
   id: string;
 };
 
-@ObjectType({ implements: CreateRecordInput })
-export class Record extends CreateRecordInput {
-  @Field(/* istanbul ignore next */ () => ID)
+// @ObjectType({ })
+export class Record {
+  @IsNotEmpty()
+  @IsString()
+  @Field()
   id: string;
 
-  @Field(/* istanbul ignore next */ () => RecordStatus)
-  status: RecordStatus;
+  @IsNotEmpty()
+  @IsString()
+  @Field()
+  baseId: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @Field()
+  tableId: string;
+
+  @IsNotEmpty()
+  @IsObject()
+  @Field()
+  fields: object;
 
   @Field()
-  createAt: string;
+  createdTime: string;
+
+  @Field()
+  modifiedTime?: string;
+
+  @Field()
+  createdBy: string;
+
+  @Field()
+  modifiedBy?: string;
 }

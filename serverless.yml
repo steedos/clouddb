@@ -52,4 +52,5 @@ functions:
           method: any
 
 resources:
-  - ${file(resource/dynamodb.yml)}
+  - ${file(resource/dynamodb-notification.yml)}
+  - ${file(resource/dynamodb-record.yml)}

@@ -6,7 +6,10 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.useGlobalPipes(new ValidationPipe({ forbidUnknownValues: true }));
+  app.useGlobalPipes(new ValidationPipe({ 
+    forbidUnknownValues: false,
+    enableDebugMessages: true
+  }));
   app.enableCors();
 
   // swagger
@@ -14,6 +17,7 @@ async function bootstrap() {
     .setTitle('CloudDB')
     .setDescription('The CloudDB API description')
     .setVersion('1.0')
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);

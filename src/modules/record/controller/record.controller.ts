@@ -1,57 +1,94 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Get,
   NotFoundException,
   Param,
   Patch,
+  Put,
   Post,
-  Query,
 } from '@nestjs/common';
 import { UseGuards } from '@nestjs/common';
+import { ApiBearerAuth } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@modules/auth/auth.module';
-import { CreateRecordInput } from '../model/create-record.input';
-import { UpdateRecordInput } from '../model/update-record.input';
 import { RecordService } from '../service/record.service';
+import { RecordInput, MultipleRecordsInput } from '../model/record.model';
 
 @UseGuards(JwtAuthGuard)
-@Controller('record')
+@ApiBearerAuth()
+@Controller(':baseId/:tableIdOrName')
 export class RecordController {
   constructor(private readonly recordService: RecordService) {}
 
-  @Post()
-  create(@Body() body: CreateRecordInput) {
-    return this.recordService.create(body);
+  @Get()
+  find(
+    @Param("baseId") baseId: string, 
+    @Param("tableIdOrName") tableIdOrName: string, 
+  ) {
+    const tableId = baseId + "/" + tableIdOrName
+    return this.recordService.findByTableId(tableId);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() body: UpdateRecordInput) {
-    return this.recordService.update({ id }, body);
+  @Get(':recordId')
+  async findOne(
+    @Param("baseId") baseId: string, 
+    @Param("tableIdOrName") tableIdOrName: string, 
+    @Param('recordId') id: string,
+  ) {
+    const tableId = baseId + "/" + tableIdOrName;
+    const record = await this.recordService.findOne({ id, tableId });
+    if (!record) {
+      throw new NotFoundException();
+    }
+    return record;
+  }
+
+  @Post()
+  async create(
+    @Param("baseId") baseId: string, 
+    @Param("tableIdOrName") tableIdOrName: string, 
+    @Body() body: MultipleRecordsInput
+  ) {
+    const tableId = baseId + "/" + tableIdOrName;
+    const { fields, records } = body;
+    if (typeof fields === 'object') {
+      return this.recordService.create(baseId, tableId, {
+        fields
+      });
+    }
+    if (typeof records === 'object') {
+      const results:any = [];
+
+      for (const record of records) {
+        const created = await this.recordService.create(baseId, tableId, {
+          fields: record.fields
+        });
+        results.push(created);
+      }
+      return results
+    }
+  }
+
+  @Patch(':recordId')
+  @Put(':recordId')
+  update(
+    @Param("baseId") baseId: string, 
+    @Param("tableIdOrName") tableIdOrName: string, 
+    @Param('recordId') id: string, 
+    @Body() body: RecordInput
+  ) {
+    const tableId = baseId + "/" + tableIdOrName;
+    return this.recordService.update({ id, tableId }, body);
   }
 
   @Post(':id')
-  delete(@Param('id') id: string) {
-    return this.recordService.delete({ id });
+  delete(
+    @Param("baseId") baseId: string, 
+    @Param("tableIdOrName") tableIdOrName: string, 
+    @Param('recordId') id: string
+  ) {
+    const tableId = baseId + "/" + tableIdOrName;
+    return this.recordService.delete({ id , tableId});
   }
 
-  @Get(':id')
-  async findOne(@Param('id') id: string) {
-    const noti = await this.recordService.findOne({ id });
-    if (!noti) {
-      throw new NotFoundException();
-    }
-    return noti;
-  }
-
-  @Get()
-  find(@Query() { userId, targetId }: { userId?: string; targetId?: string }) {
-    if (userId && !targetId) {
-      return this.recordService.findByUserId(userId);
-    }
-    if (targetId && !userId) {
-      return this.recordService.findByTargetId(targetId);
-    }
-    throw new BadRequestException();
-  }
 }

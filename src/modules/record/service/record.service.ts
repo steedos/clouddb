@@ -3,10 +3,7 @@ import * as uuid from 'uuid';
 
 import { Injectable } from '@nestjs/common';
 
-import { CreateRecordInput } from '../model/create-record.input';
-import { RecordStatus } from '../model/record.enum';
-import { Record, RecordKey } from '../model/record.model';
-import { UpdateRecordInput } from '../model/update-record.input';
+import { Record, RecordKey, RecordInput } from '../model/record.model';
 
 @Injectable()
 export class RecordService {
@@ -15,17 +12,31 @@ export class RecordService {
     private readonly model: Model<Record, RecordKey>,
   ) {}
 
-  create(input: CreateRecordInput) {
-    return this.model.create({
-      ...input,
+  async create(baseId: string, tableId: string, input: RecordInput) {
+    const userId = "test";
+    const record = await this.model.create({
+      tableId,
       id: uuid.v4(),
-      status: RecordStatus.Active,
-      createAt: new Date().toISOString(),
-    });
+      fields: input.fields,
+      createdTime: new Date().toISOString(),
+      createdBy: userId,
+      baseId
+    })
+    return {
+      id: record.id,
+      fields: record.fields,
+      createdTime: record.createdTime
+    };
   }
 
-  update(key: RecordKey, input: UpdateRecordInput) {
-    return this.model.update(key, input);
+  update(key: RecordKey, input: RecordInput) {
+    const userId = "test";
+    console.log(input)
+    return this.model.update(key, {
+      fields: input.fields,
+      modifiedTime: new Date().toISOString(),
+      modifiedBy: userId,
+    });
   }
 
   delete(key: RecordKey) {
@@ -36,21 +47,10 @@ export class RecordService {
     return this.model.get(key);
   }
 
-  findByTargetId(targetId: string) {
+  findByTableId(tableId: string) {
     return this.model
-      .query('targetId')
-      .eq(targetId)
-      .where('status')
-      .eq(RecordStatus.Active)
-      .exec();
-  }
-
-  findByUserId(userId: string) {
-    return this.model
-      .query('userId')
-      .eq(userId)
-      .where('status')
-      .eq(RecordStatus.Active)
+      .query('tableId')
+      .eq(tableId)
       .exec();
   }
 }
