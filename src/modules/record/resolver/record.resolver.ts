@@ -1,6 +1,6 @@
 import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
-import { JwtAuthGuardGraphQL } from '@5stones/nest-oidc';
+import { JwtAuthGuardGraphQL } from '@modules/auth/auth.module';
 
 import { CreateRecordInput } from '../model/create-record.input';
 import { Record } from '../model/record.model';

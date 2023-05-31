@@ -6,7 +6,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 
 import { GraphQLModule } from '@nestjs/graphql';
-import { AuthModule } from '@5stones/nest-oidc';
+import { AuthModule } from '@modules/auth/auth.module';
 
 import { NotificationModule } from './modules/notification/notification.module';
 import { RecordModule } from './modules/record/record.module';

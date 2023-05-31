@@ -25,7 +25,6 @@ const bootstrapServer = async (): Promise<Handler> => {
     .setTitle('CloudDB')
     .setDescription('The CloudDB API description')
     .setVersion('1.0')
-    .addTag('steedos')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);

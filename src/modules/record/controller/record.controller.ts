@@ -10,7 +10,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { UseGuards } from '@nestjs/common';
-import { JwtAuthGuard } from '@5stones/nest-oidc';
+import { JwtAuthGuard } from '@modules/auth/auth.module';
 import { CreateRecordInput } from '../model/create-record.input';
 import { UpdateRecordInput } from '../model/update-record.input';
 import { RecordService } from '../service/record.service';
