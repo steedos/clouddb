@@ -19,10 +19,10 @@ const bootstrapServer = async (): Promise<Handler> => {
   app.useGlobalPipes(new ValidationPipe({ forbidUnknownValues: false }));
   app.enableCors();
 
-  await app.init();
-  
   setupSwagger(app);
 
+  await app.init();
+  
   return serverlessExpress({
     app: expressApp,
   });
