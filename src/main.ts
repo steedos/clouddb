@@ -8,6 +8,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({ 
     forbidUnknownValues: false,
   }));
+  app.setGlobalPrefix('v1');
   app.enableCors();
 
   setupSwagger(app);

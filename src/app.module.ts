@@ -22,7 +22,7 @@ export const setupSwagger = (app: any)=>{
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('/swagger', app, document);
+  SwaggerModule.setup('v1/swagger', app, document);
 }
 @Module({
   imports: [

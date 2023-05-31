@@ -16,6 +16,7 @@ const bootstrapServer = async (): Promise<Handler> => {
     AppModule,
     new ExpressAdapter(expressApp),
   );
+  app.setGlobalPrefix('v1');
   app.useGlobalPipes(new ValidationPipe({ forbidUnknownValues: false }));
   app.enableCors();
 
